@@ -62,6 +62,13 @@ void list::operator=(const list&)
 int list::size()
 {
 	
+	for(int i = 0; i < _capacity; i++)
+	{
+		if( _numbers[i] != NULL )
+		{
+			_size++;
+		}
+	}
 }
 
 // Returns the element stored at index position; if position is greater than the size of the list, returns 0.
@@ -88,7 +95,13 @@ void list::add(int n) {
 // Inserts an element before the element at index.The method does nothing if position is greater than the size of the list.
 void list::insert(int n, int position)
 {
-
+	for(int i = 0; i < _size; i++)
+	{
+		if( i == position )
+		{
+			_numbers[i] = n;
+		}
+	}
 }
 
 // Removes the element at index position.The method does nothing if position is greater than or equal to the size of the list.

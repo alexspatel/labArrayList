@@ -7,6 +7,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <malloc.h>
+#include <cstddef>
+
 using namespace std;
 
 class list {
@@ -64,7 +67,7 @@ list::~list()
 int list::size()
 {	
 	int i = 0;
-	while(_numbers[i] != '\0')
+	while( _numbers[i] != NULL )
 	{
 		i++;
 	}
@@ -201,3 +204,4 @@ void list::operator=(const list& source)
 //
 //	return 0;
 //}
+

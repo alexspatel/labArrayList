@@ -5,7 +5,8 @@
 
 #include <cstdlib>
 #include <iostream>
-
+#include <array>
+#include <vector>
 using namespace std;
 
 class list {
@@ -52,6 +53,7 @@ list::list(const list& source) {
 // Destructor
 list::~list()
 {
+	// free the memory allocated by the object
 	delete[] _numbers;
 }
 
@@ -61,7 +63,12 @@ list::~list()
 // Returns the current count of elements stored in the list.
 int list::size()
 {	
-	_size = sizeof(_numbers)/sizeof(int);
+	int i = 0;
+	while(_numbers[i] != '\0')
+	{
+		i++;
+	}
+	_size = i;
 	return _size;
 }
 
@@ -125,20 +132,24 @@ void list::insert(int n, int position)
 	{		
 		if( i < position )
 		{
-			temp[i] = _numbers[i];
+			_numbers[i] = temp[i];
+			//cout << numbers[i] << " "; 
 		}
 		if( i == position )
 		{
-			temp[i] = n;
+			_numbers[i] = n;
+			//cout << numbers[i] << " ";
 		}
 
 		if( i > position )
-		{
-			temp[i] = temp[i - 1];
+		{ 
+			_numbers[i] = temp[i - 1];
+			//cout << numbers[i] << " ";
 		}
 	}
 	delete[] _numbers;
 	_numbers = temp;
+	
 
 }
 
@@ -168,6 +179,8 @@ void list::operator=(const list& source)
 	// allocate memory and copy values
 
 	*_numbers = *(source._numbers);
+	_capacity = source._capacity;
+	_size = source._size;
 
 }
 

@@ -43,7 +43,8 @@ list::list()
 }
 
 // Copy Constructor
-list::list(const list& source) {
+list::list(const list& source) 
+{
 	_size = source._size;
 	_capacity = source._capacity;
 	_numbers = new int[_capacity];
@@ -66,8 +67,9 @@ list::~list()
 // Returns the current count of elements stored in the list.
 int list::size()
 {	
+	int length = sizeof(_numbers)/sizeof(int);
 	int i = 0;
-	while( _numbers[i] != NULL )
+	while(i < length)
 	{
 		i++;
 	}
@@ -204,4 +206,3 @@ void list::operator=(const list& source)
 //
 //	return 0;
 //}
-

@@ -1,41 +1,36 @@
-// FILE: list.pp
+// FILE: list.cpp
 // LAB: Array List
 // CSCI 262
 // Alex Patel
 
 #include <cstdlib>
 #include <iostream>
-#include <array>
-#include <vector>
-#include <malloc.h>
-#include <cstddef>
 
 using namespace std;
 
 class list {
 public:
-	list();						  // defualt constructor
-	list(const list&);			  // copy construtor
-	~list();					  // destructor
+	list();				// Default construtor
+	list(const list& source);	// Copy Constructor
+	~list();			// Destructor
 
-	void operator =(const list&); // assignment operator
+	void operator =(const list& source);	// Assignment Operator
 
 	int size();
 	int get(int position);
 	void add(int);
 	void insert(int n, int position);
 	void erase(int position);
-	
+	void print();
 
 private:
 	int  _size;
 	int  _capacity;
 	int* _numbers;
-
 };
 
-
-list::list()
+// Default Contructor
+list::list() 
 {
 	_size = 0;
 	_capacity = 4;
@@ -48,8 +43,7 @@ list::list(const list& source)
 	_size = source._size;
 	_capacity = source._capacity;
 	_numbers = new int[_capacity];
-	for (int i = 0; i < _size; i++)
-	{
+	for (int i = 0; i < _size; i++) {
 		_numbers[i] = source._numbers[i];
 	}
 }
@@ -57,51 +51,38 @@ list::list(const list& source)
 // Destructor
 list::~list()
 {
-	// free the memory allocated by the object
-	delete[] _numbers;
+	delete [] _numbers;
 }
 
+// Assignment Operator
+void list::operator=(const list& source)
+{
+	int *new_numbers;
 
-
-
-// Returns the current count of elements stored in the list.
-int list::size()
-{	
-	int length = sizeof(_numbers)/sizeof(int);
-	int i = 0;
-	while(i < length)
+	if(this == &source)
 	{
-		i++;
+		return;
 	}
-	_size = i;
+
+	if(_capacity != source._capacity)
+	{
+		new_numbers = new int[source._capacity];
+		delete [] _numbers;
+		_numbers = new_numbers;
+		_capacity = source._capacity;
+	}
+}
+
+// Size member function
+int list::size()
+{
 	return _size;
 }
 
-// Returns the element stored at index position; if position is greater than the size of the list, returns 0.
-int list::get(int position)
-{
-	// If the position is greater than the size of the list
-	if( position >= _size )
-	{
-		return 0;
-	}
-
-	// Loop thru the list until the element position is found
-	for( int i = 0; i < _size; i++ )
-	{
-		// return the element of position if i = position
-		if( i == position )
-		{
-			return _numbers[i];
-		}
-	}
-}
-
-// Adds an element to the end of the list.
+// Add member function
 void list::add(int n) 
 {
-	if (_size == _capacity) 
-	{
+	if (_size == _capacity) {
 		int* tmp = new int[2 * _capacity];
 		for (int i = 0; i < _size; i++) 
 		{
@@ -115,92 +96,91 @@ void list::add(int n)
 	_size++;
 }
 
-// Inserts an element before the element at index.The method does nothing if position is greater than the size of the list.
+// Get member function
+int list::get(int position)
+{
+	for(int i = 0; i < 5; i++)
+	{
+		if(i == position)
+		{
+			return i;
+			cout << i << endl;
+		}
+	}
+	return 0;
+}
+
+// Insert member function ------->>>>>>>> Creates an error: Infinite Loop
 void list::insert(int n, int position)
 {
-	if (_size == _capacity) 
+	
+	/*int* temp = new int[_capacity];
+	for(int i = 0; i < _size; i++)
 	{
-		int* tmp = new int[2 * _capacity];
-		for (int i = 0; i < _size; i++) 
-		{
-			tmp[i] = _numbers[i];
-		}
-		delete[] _numbers;
-		_numbers = tmp;
-		_capacity *= 2;
+		temp[i] = _numbers[i];
 	}
 	_size++;
-	
-	int* temp = new int[_size + 1];
-	
 	for(int i = 0; i < _size; i++)
-	{		
-		if( i < position )
+	{
+		if(i < position)
 		{
 			_numbers[i] = temp[i];
-			//cout << numbers[i] << " "; 
 		}
-		if( i == position )
+		if(i == position)
 		{
 			_numbers[i] = n;
-			//cout << numbers[i] << " ";
 		}
-
-		if( i > position )
-		{ 
-			_numbers[i] = temp[i - 1];
-			//cout << numbers[i] << " ";
+		if(i > position)
+		{
+			_numbers[i] = temp[i-1];
 		}
-	}
-	delete[] _numbers;
-	_numbers = temp;
-	
-
+	}*/
 }
 
-
-// Removes the element at index position.The method does nothing if position is 
-// greater than or equal to the size of the list. Page 114 in textbook.
+// Erase member function
 void list::erase(int position)
 {
-	for( int i = position; i < (_size - 1); i++ )
+	int* temp = new int[_capacity];
+	for(int i = 0; i < _size; i++)
 	{
-		_numbers[i] = _numbers[i+1];
-	}	
-	_size--; 
-}
-
-
-
-// List Operator. Page 190 in textbook
-void list::operator=(const list& source)
-{
-	// check for self assignment
-	if(this == &source)
-	{
-		return;
+		temp[i] = _numbers[i];
 	}
-
-	// allocate memory and copy values
-
-	*_numbers = *(source._numbers);
-	_capacity = source._capacity;
-	_size = source._size;
-
+	for(int i = 0; i < (_size - 1); i++)
+	{
+		if(i < position)
+		{
+			_numbers[i] = temp[i];
+		}
+		if(i >= position)
+		{
+			_numbers[i] = temp[i+1];
+		}
+	}
+	_size--; // erase the last element in the list.
 }
 
 
+// Print function
+void list::print() 
+{
+	for (int i = 0; i < _size; i++) {
+		cout << _numbers[i] << ' ';
+	}
+}
 
 
-//int main() {
-//	
-//	int numbers[4] = {1,2,3,4};
+// Main function
+//int main() 
+//{
+//	list foo;
+//	for (int i = 0; i < 10; i++) {
+//		foo.add(i);
+//	}
 //
-//	list sizeOf;
+//	foo.print();
+//	cout << endl;
 //
-//	sizeOf.size();
-//
-//	cout << size() << endl;
+//	foo.get(4);
 //
 //	system("pause");
 //

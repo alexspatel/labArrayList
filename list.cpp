@@ -57,7 +57,9 @@ list::~list()
 // Assignment Operator
 void list::operator=(const list& source)
 {
-	int *new_numbers;
+	delete [] _numbers;
+	_numbers = new int[_capacity];
+	/*int *new_numbers;
 
 	if(this == &source)
 	{
@@ -70,7 +72,7 @@ void list::operator=(const list& source)
 		delete [] _numbers;
 		_numbers = new_numbers;
 		_capacity = source._capacity;
-	}
+	}*/
 }
 
 // Size member function
@@ -114,13 +116,14 @@ int list::get(int position)
 void list::insert(int n, int position)
 {
 	
-	/*int* temp = new int[_capacity];
+	int* temp = new int[_capacity];
+	
 	for(int i = 0; i < _size; i++)
 	{
 		temp[i] = _numbers[i];
 	}
-	_size++;
-	for(int i = 0; i < _size; i++)
+
+	for(int i = 0; i < (_size+1); i++)
 	{
 		if(i < position)
 		{
@@ -134,7 +137,21 @@ void list::insert(int n, int position)
 		{
 			_numbers[i] = temp[i-1];
 		}
-	}*/
+	}
+	
+	/*_numbers[position] = n;
+	_size++;*/
+	
+
+	//for(int i = _size - 1; i >= position; i--)
+	//{
+	//	_numbers[i+1] = _numbers[i];
+	//}
+	//_numbers[position] = n;
+	//_size++;
+	
+
+
 }
 
 // Erase member function
@@ -173,14 +190,17 @@ void list::print()
 //int main() 
 //{
 //	list foo;
-//	for (int i = 0; i < 10; i++) {
+//	
+//	for (int i = 0; i < 10; i++) 
+//	{
 //		foo.add(i);
 //	}
-//
+//	foo.insert(2,9);
+//	cout << foo.size() << endl;
 //	foo.print();
 //	cout << endl;
 //
-//	foo.get(4);
+//	//foo.get(4);
 //
 //	system("pause");
 //
